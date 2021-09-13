@@ -1,0 +1,68 @@
+
+let Twit = require("twit");
+
+let T = new Twit(require("./config"));
+const safePromise = require('./safe-promise');
+
+const hashTags = ["#hiring", "#nodejs", "#coding"];
+
+const random = Math.floor(Math.random() * hashTags.length);
+
+let searchHashtag = {
+  q: hashTags[random],
+  count: 12,
+  result_type: "recent"
+};
+
+const timer = ms => new Promise(res => setTimeout(res, ms));
+
+function getTweets(searchHashtag) {
+  return new Promise((resolve, reject) => {
+    T.get("search/tweets", searchHashtag, (err, data) => {
+      if (err) {
+        console.log("Cannot Grab Latest Tweet On Hashtag: ", searchHashtag.q);
+        return reject(err);
+      }
+      if (data && data.statuses.length > 0) {
+        return resolve(data)
+      } else {
+        console.log("No Tweets on the Hashtag: ", searchHashtag.q);
+        return resolve(null);
+      }
+    })
+  })
+}
+
+function postTweet(tweet) {
+  return new Promise((resolve, reject) => {
+
+    T.post("statuses/retweet/" + tweet.id_str, async (e, res) => {
+      if (e) {
+        console.log("Cannot Retweet your Tweet!");
+        return reject(e);
+      }
+      return resolve(true);
+    });
+
+  })
+}
+
+async function retweet() {
+  let [error, data] = await safePromise(getTweets(searchHashtag));
+
+  if (data && data.statuses.length > 0) {
+    for (let i = 0; i < data.statuses.length; i++) {
+      let tweet = data.statuses[i];
+      let [error, successTweet] = await safePromise(postTweet(tweet));
+      if (successTweet) {
+        console.log('Tweet Done!');
+      }
+      await timer(1000 * 300);
+    }
+  } else {
+    console.log("No Tweets on the Hashtag: ", searchHashtag.q);
+  }
+  retweet();
+}
+
+retweet();

@@ -1,0 +1,29 @@
+{
+  "name": "twitter-bot",
+  "version": "1.0.0",
+  "description": "A simple twitter bot for people",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mayaank-gupta/twitter-bot.git"
+  },
+  "keywords": [
+    "twitter",
+    "nodejs",
+    "bot"
+  ],
+  "author": "Mayank Gupta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mayaank-gupta/twitter-bot/issues"
+  },
+  "homepage": "https://github.com/mayaank-gupta/twitter-bot#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "twit": "^2.2.11"
+  }
+}

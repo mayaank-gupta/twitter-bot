@@ -58,7 +58,7 @@ async function retweet() {
       if (successTweet) {
         console.log('Tweet Done!');
       }
-      await timer(1000 * 300);
+      await timer(1000 * 240);
     }
   } else {
     console.log("No Tweets on the Hashtag:");

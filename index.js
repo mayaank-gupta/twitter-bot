@@ -4,20 +4,21 @@ let Twit = require("twit");
 let T = new Twit(require("./config"));
 const safePromise = require('./safe-promise');
 
-const hashTags = ["#hiring", "#nodejs", "#coding"];
-
-const random = Math.floor(Math.random() * hashTags.length);
-
-let searchHashtag = {
-  q: hashTags[random],
-  count: 12,
-  result_type: "recent"
-};
-
 const timer = ms => new Promise(res => setTimeout(res, ms));
 
-function getTweets(searchHashtag) {
+function getTweets() {
   return new Promise((resolve, reject) => {
+
+    const hashTags = ["#hiring", "#nodejs", "#coding"];
+
+    const random = Math.floor(Math.random() * hashTags.length);
+
+    let searchHashtag = {
+      q: hashTags[random],
+      count: 12,
+      result_type: "recent"
+    };
+
     T.get("search/tweets", searchHashtag, (err, data) => {
       if (err) {
         console.log("Cannot Grab Latest Tweet On Hashtag: ", searchHashtag.q);
@@ -48,7 +49,7 @@ function postTweet(tweet) {
 }
 
 async function retweet() {
-  let [error, data] = await safePromise(getTweets(searchHashtag));
+  let [error, data] = await safePromise(getTweets());
 
   if (data && data.statuses.length > 0) {
     for (let i = 0; i < data.statuses.length; i++) {
@@ -60,7 +61,7 @@ async function retweet() {
       await timer(1000 * 300);
     }
   } else {
-    console.log("No Tweets on the Hashtag: ", searchHashtag.q);
+    console.log("No Tweets on the Hashtag:");
   }
   retweet();
 }

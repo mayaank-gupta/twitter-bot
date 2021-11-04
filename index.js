@@ -9,7 +9,7 @@ const timer = ms => new Promise(res => setTimeout(res, ms));
 function getTweets() {
   return new Promise((resolve, reject) => {
 
-    const hashTags = ["#hiring", "#nodejs", "#coding"];
+    const hashTags = ["#datascience", "#nodejs", "#ai"];
 
     const random = Math.floor(Math.random() * hashTags.length);
 
@@ -58,7 +58,7 @@ async function retweet() {
       if (successTweet) {
         console.log('Tweet Done!');
       }
-      await timer(1000 * 240);
+      await timer(1000 * 210);
     }
   } else {
     console.log("No Tweets on the Hashtag:");

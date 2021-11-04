@@ -1,5 +1,6 @@
 
 let Twit = require("twit");
+let sendNotification = require('./helpers').sendNotification;
 
 let T = new Twit(require("./config"));
 const safePromise = require('./safe-promise');
@@ -58,7 +59,9 @@ async function retweet() {
       if (successTweet) {
         console.log('Tweet Done!');
       }
-      await timer(1000 * 210);
+
+      await sendNotification(i);
+      await timer(1000 * 30);
     }
   } else {
     console.log("No Tweets on the Hashtag:");

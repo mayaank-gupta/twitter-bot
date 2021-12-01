@@ -52,21 +52,25 @@ function postTweet(tweet) {
 async function retweet() {
   let [error, data] = await safePromise(getTweets());
 
+  if(error) {
+    retweet();
+  }
+
   if (data && data.statuses.length) {
     for (let i = 0; i < data.statuses.length; i++) {
       let tweet = data.statuses[i];
-      let [error, successTweet] = await safePromise(postTweet(tweet));
-      if (successTweet) {
-        console.log('Tweet Done!');
-      }
+      let [err, successTweet] = await safePromise(postTweet(tweet));
 
+      if(err) {
+        await sendNotification("Error");
+      }
       await sendNotification(i);
       await timer(1000 * 180);
     }
   } else {
-    console.log("No Tweets on the Hashtag:");
+    retweet();
   }
-  retweet();
+  
 }
 
 retweet();

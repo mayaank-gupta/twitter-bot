@@ -10,7 +10,7 @@ const timer = ms => new Promise(res => setTimeout(res, ms));
 function getTweets() {
   return new Promise((resolve, reject) => {
 
-    const hashTags = ["#datascience", "#nodejs", "#ai"];
+    const hashTags = ["#datascience", "#javascript", "#ai"];
 
     const random = Math.floor(Math.random() * hashTags.length);
 
@@ -25,7 +25,7 @@ function getTweets() {
         console.log("Cannot Grab Latest Tweet On Hashtag: ", searchHashtag.q);
         return reject(err);
       }
-      if (data && data.statuses.length > 0) {
+      if (data && data.statuses.length) {
         return resolve(data)
       } else {
         console.log("No Tweets on the Hashtag: ", searchHashtag.q);
@@ -52,7 +52,7 @@ function postTweet(tweet) {
 async function retweet() {
   let [error, data] = await safePromise(getTweets());
 
-  if (data && data.statuses.length > 0) {
+  if (data && data.statuses.length) {
     for (let i = 0; i < data.statuses.length; i++) {
       let tweet = data.statuses[i];
       let [error, successTweet] = await safePromise(postTweet(tweet));
@@ -61,7 +61,7 @@ async function retweet() {
       }
 
       await sendNotification(i);
-      await timer(1000 * 200);
+      await timer(1000 * 180);
     }
   } else {
     console.log("No Tweets on the Hashtag:");

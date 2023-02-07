@@ -57,6 +57,8 @@ async function retweet() {
       let tweet = data.statuses[i];
       let [err, successTweet] = await safePromise(postTweet(tweet));
 
+      console.log("tweeted");
+
       if (err) {
         await sendNotification("Error");
       }
@@ -68,4 +70,4 @@ async function retweet() {
   }
 }
 
-retweet();
+module.exports = retweet;

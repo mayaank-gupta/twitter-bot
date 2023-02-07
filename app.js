@@ -1,5 +1,5 @@
 const express = require("express");
-const retweet = require(".");
+const retweet = require("./index");
 const app = express();
 const port = process.env.PORT || 3001;
 
